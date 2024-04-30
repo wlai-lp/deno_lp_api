@@ -25,13 +25,12 @@ Deno.test("MsgHistService GetConvo function", async () => {
     console.log(`should found 1 convo count = ${convo.getConvoRecordCount()}`)
     assert(convo.getConvoRecordCount() == 1)
   });
-
-
+  
+  
   Deno.test("MsgHistService GetConvoByDate function", async () => {
     const msgHist = new MessageHistory(testConfig);
     const convo = await msgHist.GetConvoByDateRange(1712084400000, 1714510193033)
-    // console.log(convo.getConvoRecordCount())
-    console.log(convo)
-    assert(true)
+    console.log(`should found 0 convo count = ${convo.getConvoRecordCount()}`)
+    assert(convo.getConvoRecordCount() == 0)
   });
   
