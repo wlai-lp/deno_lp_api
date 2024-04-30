@@ -280,12 +280,21 @@ export interface CustomerInfoCustomerInfo {
     userName:   string;
 }
 
-export type MsgHistPayload = {
+// Create a base payload structure and then extend it
+export type MsgHistDateRangePayload = MsgHistBasePayload & {    
     status: ["OPEN", "CLOSE"];
     start: {
         from: number;
         to: number;
-    };
+    };    
+};
+
+export type MsgHistByIdPayload = MsgHistBasePayload & {    
+    conversationId: string
+};
+
+
+export type MsgHistBasePayload = {
     contentToRetrieve: [
         "messageRecords",
         "agentParticipants",
@@ -299,4 +308,5 @@ export type MsgHistPayload = {
         "unAuthSdes"
     ];
     cappingConfiguration: string;
-};
+
+}

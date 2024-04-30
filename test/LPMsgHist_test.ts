@@ -16,13 +16,21 @@ Deno.test("MsgHistService GetConvo function", async () => {
     const msgHist = new MessageHistory(testConfig);
     const convo = await msgHist.GetConvoById(convoId)
     console.log(convo.getConvoRecordCount())
-    assert(true)
+    assert(convo.getConvoRecordCount() == 1)
+  });
+
+  Deno.test("MsgHistService GetConvo v2 function", async () => {
+    const msgHist = new MessageHistory(testConfig);
+    const convo = await msgHist.GetConvoByIdv2(convoId)
+    console.log(`should found 1 convo count = ${convo.getConvoRecordCount()}`)
+    assert(convo.getConvoRecordCount() == 1)
   });
 
 
-  Deno.test("MsgHistService GetConvoBuDate function", async () => {
+  Deno.test("MsgHistService GetConvoByDate function", async () => {
     const msgHist = new MessageHistory(testConfig);
     const convo = await msgHist.GetConvoByDateRange(1712084400000, 1714510193033)
+    // console.log(convo.getConvoRecordCount())
     console.log(convo)
     assert(true)
   });
