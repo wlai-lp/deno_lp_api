@@ -65,11 +65,18 @@ export interface BaseURIs {
     service: string;
 }
 
-export interface MsgHistPayload {
-    conversationId:       string;
+export interface MsgHistoryPayload {
+    status:               string[];
+    start:                Start;
     contentToRetrieve:    string[];
     cappingConfiguration: string;
 }
+
+export interface Start {
+    from: number;
+    to:   number;
+}
+
 
 // msg history response
 export interface MsgHistoryResponseJSON {
@@ -272,3 +279,24 @@ export interface CustomerInfoCustomerInfo {
     customerId: string;
     userName:   string;
 }
+
+export type MsgHistPayload = {
+    status: ["OPEN", "CLOSE"];
+    start: {
+        from: number;
+        to: number;
+    };
+    contentToRetrieve: [
+        "messageRecords",
+        "agentParticipants",
+        "consumerParticipants",
+        "sdes",
+        "responseTime",
+        "transfers",
+        "dialogs",
+        "summary",
+        "conversationSurveys",
+        "unAuthSdes"
+    ];
+    cappingConfiguration: string;
+};

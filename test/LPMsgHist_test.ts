@@ -18,4 +18,12 @@ Deno.test("MsgHistService GetConvo function", async () => {
     console.log(convo.getConvoRecordCount())
     assert(true)
   });
+
+
+  Deno.test("MsgHistService GetConvoBuDate function", async () => {
+    const msgHist = new MessageHistory(testConfig);
+    const convo = await msgHist.GetConvoByDateRange(1712084400000, 1714510193033)
+    console.log(convo)
+    assert(true)
+  });
   

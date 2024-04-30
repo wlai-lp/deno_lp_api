@@ -11,4 +11,8 @@ export class MsgHistResponse{
         return this.responseJson.conversationHistoryRecords.length
     }
 
+    listTranscript(){
+        this.responseJson.conversationHistoryRecords
+    }
+
 }
