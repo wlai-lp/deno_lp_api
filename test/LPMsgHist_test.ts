@@ -12,16 +12,9 @@ Deno.test("MsgHistService Test", () => {
 });
 
 
-Deno.test("MsgHistService GetConvo function", async () => {
-    const msgHist = new MessageHistory(testConfig);
-    const convo = await msgHist.GetConvoById(convoId)
-    console.log(convo.getConvoRecordCount())
-    assert(convo.getConvoRecordCount() == 1)
-  });
-
   Deno.test("MsgHistService GetConvo v2 function", async () => {
     const msgHist = new MessageHistory(testConfig);
-    const convo = await msgHist.GetConvoByIdv2(convoId)
+    const convo = await msgHist.GetConvoById(convoId)
     console.log(`should found 1 convo count = ${convo.getConvoRecordCount()}`)
     assert(convo.getConvoRecordCount() == 1)
   });
