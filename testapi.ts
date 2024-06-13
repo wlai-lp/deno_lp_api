@@ -9,6 +9,6 @@ const msgHist = new MessageHistory(testConfig);
 const convo = await msgHist.GetConvoById(convoId)
 console.log(convo.getConvoRecordCount())
 console.log(convo.responseJson.conversationHistoryRecords[0].messageRecords[0].messageData.msg.text);
-
+convo.responseJson.conversationHistoryRecords[0].info.latestAgentNickname
     
 

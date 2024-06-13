@@ -310,3 +310,88 @@ export type MsgHistBasePayload = {
     cappingConfiguration: string;
 
 }
+
+export interface BotAuthUser {
+    success:       boolean;
+    successResult: SuccessResult;
+    message:       string;
+}
+
+export interface SuccessResult {
+    chatBotPlatformUser:   ChatBotPlatformUser;
+    apiAccessToken:        string;
+    apiAccessPermToken:    string;
+    config:                Config;
+    sessionOrganizationId: string;
+    leAccountId:           string;
+    cbRegion:              string;
+    enabledFeatures:       string[];
+    siteSettings:          SiteSetting[];
+    leUserId:              string;
+    privileges:            number[];
+    isElevatedLpa:         boolean;
+}
+
+export interface ChatBotPlatformUser {
+    id:               string;
+    name:             string;
+    email:            string;
+    firstname:        string;
+    lastname:         string;
+    userLoginType:    string;
+    userId:           string;
+    role:             string;
+    orgId:            string;
+    status:           string;
+    creationTime:     Date;
+    modificationTime: Date;
+    cb2Enabled:       boolean;
+}
+
+export interface Config {
+    "train.min_size.samples": string;
+    "train.min_size.intents": string;
+}
+
+export interface SiteSetting {
+    name:  string;
+    value: ValueClass | string;
+    type:  string;
+}
+
+export interface ValueClass {
+    isPreviewEnabled?:    boolean;
+    expirationTimestamp?: number;
+    capacityVolume?:      number;
+    accountId?:           string;
+    userId?:              number;
+    loginName?:           string;
+    consentTimestamp?:    number;
+    brandName?:           string;
+    brandIndustry?:       string;
+}
+
+export interface BotGroupsResult {
+    success:       boolean;
+    successResult: SuccessResult;
+}
+
+export interface SuccessResult {
+    data: BotEntity[];
+}
+
+export interface BotEntity {
+    botGroupId:           string;
+    botGroupName:         string;
+    transferMessage:      null;
+    channel:              string;
+    organizationId:       null;
+    collaborationEnabled: boolean;
+    numberOfBots:         number;
+    createdAt:            number;
+    updatedAt:            number;
+    createdBy:            null;
+    createdByName:        null;
+    updatedBy:            null;
+    updatedByName:        null;
+}
