@@ -83,5 +83,5 @@ Deno.test("Bot Service get all bot ids", async () => {
   // const botExport = await botService.getBotById("9cef068d-2f16-4437-8a22-ff24a84f8bf7")
   assertExists(botService);
   assert(Array.isArray(botIds))
-  assert(botIds.length > 0)
+  assert(botIds.length == 23)
 });

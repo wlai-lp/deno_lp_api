@@ -26,7 +26,6 @@ export default class BotService {
   organizationId: string = "";
   botGroupEntities: BotGroupEntity[] | undefined;
   botEntities: BotEntity[] | undefined;
-  botIds: string[] = new Array(0);
 
   constructor(config: LPConfig) {
     this.config = config;
@@ -35,7 +34,6 @@ export default class BotService {
   /**
    * if you have the code and org id, you can init this way
    */
-
   initWithCodeAndOrg(code: string, orgid: string) {
     this.accessCode = code;
     this.organizationId = orgid;
@@ -59,31 +57,16 @@ export default class BotService {
     }    
   }
 
-  // TODO: WIP getting the entity to merge, has the ids now
-  async getBotEntitiesByGroupId(groupId: string) {
-    console.log(
-      "🚀 ~ BotService ~ getBotEntitiesByGroupId ~ groupId:",
-      groupId
-    );
+  async getBotEntitiesByGroupId(groupId: string) {    
     const URL = BOT_GET_GROUP_ID_URL + groupId;
-    console.log("🚀 ~ BotService ~ getBotEntitiesByGroupId ~ URL:", URL);
     const result: GroupedBotResult = await this.botAPI(URL);
     const resultBotEntities: BotEntity[] = result.successResult.data;    
-    console.log(result.success);
-
-    this.botEntities = [...this.botEntities!, ...resultBotEntities]
-    //console.log("🚀 ~ BotService ~ getBotEntitiesByGroupId ~ botEntities:", this.botEntities)
-
-
-    const ids = resultBotEntities.map((entity) => entity.botId);
-    console.log(ids);
-    this.botIds = [...this.botIds, ...ids];
-    console.log(this.botIds);
-    // if(this.botEntities !== undefined){
-    //     this.botEntities = [this.botEntities, ...resultBotEntities]
-    // }
-    // const result = await this.botAPI(BOT_EXPORT_URL + id)
-    return result;
+    if (result.success) {
+        this.botEntities = [...this.botEntities!, ...resultBotEntities]    
+        return result;
+    } else {
+        throw new Error("Search by group id not successful");        
+    }    
   }
 
   /**
@@ -93,12 +76,7 @@ export default class BotService {
    * @returns
    */
   async getGroupIdsFromGroupBotResult() {
-    const groupIds = this.botGroupEntities?.map((bge) => bge.botGroupId);
-    console.log(
-      "🚀 ~ BotService ~ getGroupIdsFromGroupBotResult ~ groupIds:",
-      groupIds
-    );
-
+    const groupIds = this.botGroupEntities?.map((bge) => bge.botGroupId);    
     for (const value of groupIds!) {
       await this.getBotEntitiesByGroupId(value);
     }
@@ -106,68 +84,25 @@ export default class BotService {
   }
 
   async getBotGroups() {
-    // const botGroupsResult: BotGroupsResult = await this.testURL();
-    const botGroupsResult: BotGroupsResult = await this.botAPI(
-      BOT_GET_GROUPS_URL
-    );
-    console.log(
-      "🚀 ~ BotService ~ getBotGroups ~ botGroupsResult:",
-      botGroupsResult.success
-    );
+    const botGroupsResult: BotGroupsResult = await this.botAPI(BOT_GET_GROUPS_URL);    
     this.botGroupEntities = botGroupsResult.successResult.data;
     return botGroupsResult;
   }
 
-  async getAllBotEntities() {
-    await this.getUngroupedBotResult();
-    // await this.getGroupedBotResult()
-  }
-
-
   async getBotById(id: string) {
     const result = await this.botAPI(BOT_EXPORT_URL + id);
     return result;
-  }
-
-  
+  }  
 
   getBotIds() {
     const botIds = this.botEntities?.map((bot) => bot.botId)
-    // return this.botIds;
     return botIds;
   }
 
   async getUngroupedBotResult() {
-    const ungroupedBotResult: GroupedBotResult = await this.botAPI(
-      BOT_GET_UNGROUPED_URL
-    );
-    this.botEntities = ungroupedBotResult.successResult.data;
-    console.log(
-      "🚀 ~ BotService ~ getUngroupedBotResult:",
-      ungroupedBotResult.success
-    );
-    // TODO: doesn't belong there, short term solution to get the ids
-    const ids = this.botEntities.map((bot) => bot.botId);
-    this.botIds = [...this.botIds, ...ids];
+    const ungroupedBotResult: GroupedBotResult = await this.botAPI(BOT_GET_UNGROUPED_URL);
+    this.botEntities = ungroupedBotResult.successResult.data;    
     return ungroupedBotResult;
-  }
-
-  async testURL() {
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", "b6528493-ecd8-4675-8809-d08f8b361e58");
-    // myHeaders.append("Connection", "keep-alive");
-    myHeaders.append("OrganizationId", "8c8e49dd-603f-49c3-9a53-7646d20713f4");
-
-    const requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-    };
-
-    const response = await fetch(
-      "https://va.bc-platform.liveperson.net/bot-platform-manager-0.1/bot-groups?expand-all=true",
-      requestOptions
-    );
-    return await response.json();
   }
 
   async getUserBearerToken() {
@@ -188,15 +123,7 @@ export default class BotService {
       const botUserAuth: BotAuthUser = await this.botAuthAPI(URL);
       if (botUserAuth.success) {
         this.accessCode = botUserAuth.successResult.apiAccessToken;
-        this.organizationId = botUserAuth.successResult.sessionOrganizationId;
-        console.log(
-          "🚀 ~ BotService ~ authUser ~ organizationId:",
-          this.organizationId
-        );
-        console.log(
-          "🚀 ~ botService ~ authUser ~ accessToken:",
-          this.accessCode
-        );
+        this.organizationId = botUserAuth.successResult.sessionOrganizationId;        
         return this.accessCode;
       } else {
         console.error("unable to get access code");
