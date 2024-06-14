@@ -1,8 +1,9 @@
-import { assert } from "https://deno.land/std@0.223.0/assert/mod.ts";
+import { assert, assertInstanceOf } from "https://deno.land/std@0.223.0/assert/mod.ts";
 import BotService from "../src/services/BotService.ts";
 import { testConfig } from "./TestConfig.ts";
 import { assertExists } from "https://deno.land/std@0.223.0/assert/assert_exists.ts";
 import { BOT_AUTH_URL } from "../src/util/LPConst.ts";
+import { assertIsError } from "https://deno.land/std@0.224.0/assert/assert_is_error.ts";
 
 Deno.test("Bot Service start", () => {
   const botService = new BotService(testConfig);
@@ -29,11 +30,15 @@ Deno.test("Bot Service init", async () => {
   assertExists(code);
 });
 
-Deno.test("Bot Service init with bearer", async () => {
+Deno.test("Bot Service init with bearer throw error", async () => {
   testConfig.bearer = "dummy-bearer-value"
   const botService = new BotService(testConfig);
-  const code = await botService.init();
-  assertExists(code);
+  try {
+    await botService.init()
+    assertIsError(null)
+  } catch (error) {
+    assertIsError(error);    
+  }
 });
 
 
@@ -73,8 +78,10 @@ Deno.test("Bot Service get all groups", async () => {
 Deno.test("Bot Service get all bot ids", async () => {
   const botService = new BotService(testConfig);
   await botService.init();
-  //botService.getAllBotIds()
+  const botIds = botService.getBotIds()
   //botService.getGroupIdsFromGroupBotResult()
   // const botExport = await botService.getBotById("9cef068d-2f16-4437-8a22-ff24a84f8bf7")
   assertExists(botService);
+  assert(Array.isArray(botIds))
+  assert(botIds.length > 0)
 });

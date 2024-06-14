@@ -33,56 +33,52 @@ export default class BotService {
   }
 
   /**
-   * get auth code gets the
+   * if you have the code and org id, you can init this way
    */
 
-  initWithCodeAndOrg(code:string, orgid:string){
-    this.accessCode = code
-    this.organizationId = orgid
+  initWithCodeAndOrg(code: string, orgid: string) {
+    this.accessCode = code;
+    this.organizationId = orgid;
   }
 
+  /**
+   * This uses LPConfig object to get access token and code
+   * then
+   * @returns
+   */
   async init() {
-    await this.getUserAuthorizationCode(BOT_AUTH_URL);
-    await this.getBotGroups(); // this gets all group ids
-    // TODO: get bot ids from group ids
-    // await this.getGroupIdsFromGroupBotResult();
-    await this.getUngroupedBotResult(); // this gets all ungrouped bot entities
-
-    return "done";
+    try {
+        await this.getUserAuthorizationCode(BOT_AUTH_URL);
+        await this.getUngroupedBotResult(); // this gets all ungrouped bot entities
+        await this.getBotGroups(); // this gets all group ids
+        // TODO: get bot ids from group ids
+        await this.getGroupIdsFromGroupBotResult(); // then loop each group to get bot entities
+        return true;    
+    } catch (error) {
+        throw new Error("Init error " + error);        
+    }    
   }
-
-  async getAllBotEntities(){
-    await this.getUngroupedBotResult()
-    // await this.getGroupedBotResult()
-
-  }
-
-  getAllBotIds() {
-    console.log("debug")
-    const ungroupedBotIds  = this.botEntities?.map((bot) => bot.botId);
-    // const groupedBotIds = this.botEntities?.map((bot) => bot.
-    // const ungroupedBotIds  = this.ungroupedBotEntities?.length
-    console.log(ungroupedBotIds)
-  }
-
-  async getBotById(id:string){
-    const result = await this.botAPI(BOT_EXPORT_URL + id)
-    return result;
-  }
-
 
   // TODO: WIP getting the entity to merge, has the ids now
-  async getBotEntitiesByGroupId(groupId : string) {
-    console.log("🚀 ~ BotService ~ getBotEntitiesByGroupId ~ groupId:", groupId)
-    const URL = BOT_GET_GROUP_ID_URL + groupId
-    console.log("🚀 ~ BotService ~ getBotEntitiesByGroupId ~ URL:", URL)
-    const result : GroupedBotResult = await this.botAPI(URL)
-    const resultBotEntities : BotEntity[] = result.successResult.data
-    console.log(result.success)
-    const ids = resultBotEntities.map((entity) => entity.botId)
-    console.log(ids)
-    this.botIds = [...this.botIds, ...ids]
-    console.log(this.botIds)
+  async getBotEntitiesByGroupId(groupId: string) {
+    console.log(
+      "🚀 ~ BotService ~ getBotEntitiesByGroupId ~ groupId:",
+      groupId
+    );
+    const URL = BOT_GET_GROUP_ID_URL + groupId;
+    console.log("🚀 ~ BotService ~ getBotEntitiesByGroupId ~ URL:", URL);
+    const result: GroupedBotResult = await this.botAPI(URL);
+    const resultBotEntities: BotEntity[] = result.successResult.data;    
+    console.log(result.success);
+
+    this.botEntities = [...this.botEntities!, ...resultBotEntities]
+    //console.log("🚀 ~ BotService ~ getBotEntitiesByGroupId ~ botEntities:", this.botEntities)
+
+
+    const ids = resultBotEntities.map((entity) => entity.botId);
+    console.log(ids);
+    this.botIds = [...this.botIds, ...ids];
+    console.log(this.botIds);
     // if(this.botEntities !== undefined){
     //     this.botEntities = [this.botEntities, ...resultBotEntities]
     // }
@@ -90,58 +86,23 @@ export default class BotService {
     return result;
   }
 
-  getBotIds() {
-    return this.botIds
-  }
-
   /**
    * get all group ids
    * for each group id, call get get groupby id to get bot entities
    * return bot entities
-   * @returns 
+   * @returns
    */
   async getGroupIdsFromGroupBotResult() {
-    const groupIds = this.botGroupEntities?.map((bge) => bge.botGroupId)
-    console.log("🚀 ~ BotService ~ getGroupIdsFromGroupBotResult ~ groupIds:", groupIds)
+    const groupIds = this.botGroupEntities?.map((bge) => bge.botGroupId);
+    console.log(
+      "🚀 ~ BotService ~ getGroupIdsFromGroupBotResult ~ groupIds:",
+      groupIds
+    );
 
-    for(const value of groupIds!){
-        await this.getBotEntitiesByGroupId(value)
+    for (const value of groupIds!) {
+      await this.getBotEntitiesByGroupId(value);
     }
-
-    // const fetchPromises = groupIds!.map(this.getBotEntitiesByGroupId);
-    // groupIds!.map(await this.getBotEntitiesByGroupId);
-
-    // try {
-    //     const results = await Promise.all(fetchPromises);
-    //     // Merge all results into a single array (or object depending on the structure of your API response)
-    //     const mergedResults = [].concat(...results);
-    //     console.log(mergedResults);
-    //     return mergedResults;
-    // } catch (error) {
-    //     console.error('Error fetching bot data:', error);
-    // }
-
-
     return groupIds;
-    
-    // await this.botAPI(BOT_GET_GROUP_ID_URL + bge.botGroupId)
-
-    // const ungroupedBotResult: UngroupedBotResult = await this.botAPI(
-    //   BOT_GET_UNGROUPED_URL
-    // );
-    // this.ungroupedBotEntities = ungroupedBotResult.successResult.data;
-    // console.log("🚀 ~ BotService ~ getUngroupedBotResult:",ungroupedBotResult.success);
-    // return ungroupedBotResult;
-  }
-
-  async getUngroupedBotResult() {
-    const ungroupedBotResult: GroupedBotResult = await this.botAPI(BOT_GET_UNGROUPED_URL);
-    this.botEntities = ungroupedBotResult.successResult.data;
-    console.log("🚀 ~ BotService ~ getUngroupedBotResult:",ungroupedBotResult.success);
-    // TODO: doesn't belong there, short term solution to get the ids    
-    const ids = this.botEntities.map((bot) => bot.botId)
-    this.botIds = [...this.botIds, ...ids]
-    return ungroupedBotResult;
   }
 
   async getBotGroups() {
@@ -155,6 +116,40 @@ export default class BotService {
     );
     this.botGroupEntities = botGroupsResult.successResult.data;
     return botGroupsResult;
+  }
+
+  async getAllBotEntities() {
+    await this.getUngroupedBotResult();
+    // await this.getGroupedBotResult()
+  }
+
+
+  async getBotById(id: string) {
+    const result = await this.botAPI(BOT_EXPORT_URL + id);
+    return result;
+  }
+
+  
+
+  getBotIds() {
+    const botIds = this.botEntities?.map((bot) => bot.botId)
+    // return this.botIds;
+    return botIds;
+  }
+
+  async getUngroupedBotResult() {
+    const ungroupedBotResult: GroupedBotResult = await this.botAPI(
+      BOT_GET_UNGROUPED_URL
+    );
+    this.botEntities = ungroupedBotResult.successResult.data;
+    console.log(
+      "🚀 ~ BotService ~ getUngroupedBotResult:",
+      ungroupedBotResult.success
+    );
+    // TODO: doesn't belong there, short term solution to get the ids
+    const ids = this.botEntities.map((bot) => bot.botId);
+    this.botIds = [...this.botIds, ...ids];
+    return ungroupedBotResult;
   }
 
   async testURL() {
@@ -177,7 +172,7 @@ export default class BotService {
 
   async getUserBearerToken() {
     const agentVep = new AgentVepService(this.config);
-    this.bearer = await agentVep.getUserBearerToken() || "";
+    this.bearer = (await agentVep.getUserBearerToken()) || "";
     return this.bearer;
   }
 
@@ -191,14 +186,22 @@ export default class BotService {
       throw new Error("No bearer token value");
     } else {
       const botUserAuth: BotAuthUser = await this.botAuthAPI(URL);
-      this.accessCode = botUserAuth.successResult.apiAccessToken;
-      this.organizationId = botUserAuth.successResult.sessionOrganizationId;
-      console.log(
-        "🚀 ~ BotService ~ authUser ~ organizationId:",
-        this.organizationId
-      );
-      console.log("🚀 ~ botService ~ authUser ~ accessToken:", this.accessCode);
-      return this.accessCode;
+      if (botUserAuth.success) {
+        this.accessCode = botUserAuth.successResult.apiAccessToken;
+        this.organizationId = botUserAuth.successResult.sessionOrganizationId;
+        console.log(
+          "🚀 ~ BotService ~ authUser ~ organizationId:",
+          this.organizationId
+        );
+        console.log(
+          "🚀 ~ botService ~ authUser ~ accessToken:",
+          this.accessCode
+        );
+        return this.accessCode;
+      } else {
+        console.error("unable to get access code");
+        throw new Error("Unable to get accessCode");
+      }
     }
   }
 
