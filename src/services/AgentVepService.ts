@@ -1,9 +1,6 @@
 import { AgentVep, Domains, LPConfig } from "../types/api.d.ts";
 import getLPDomain from "./DomainService.ts";
-import { load } from "https://deno.land/std@0.223.0/dotenv/mod.ts";
 
-const env = await load();
-const bearer = env["BEARER"];
 const serviceName = "agentVep";
 
 export default class AgentVepService {
@@ -14,10 +11,14 @@ export default class AgentVepService {
     this.config = config;
   }
 
+  isEmpty<T>(value: T | null | undefined): value is T {
+    return value !== null && value !== undefined && value !== '';
+}
+
   async getUserBearerToken() {
-    if(bearer !== '' || bearer === undefined){
-      console.log("has token in the .env, return token");
-      return bearer;
+    if(this.isEmpty(this.config.bearer)){
+      console.log("has token in the .env, return token " + this.config.bearer);
+      return this.config.bearer;
       
     }
     const domain = await getLPDomain(this.config.siteId);
