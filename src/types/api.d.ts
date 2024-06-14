@@ -377,10 +377,10 @@ export interface BotGroupsResult {
 }
 
 export interface SuccessResult {
-    data: BotEntity[];
+    data: BotGroupEntity[];
 }
 
-export interface BotEntity {
+export interface BotGroupEntity {
     botGroupId:           string;
     botGroupName:         string;
     transferMessage:      null;
@@ -394,4 +394,59 @@ export interface BotEntity {
     createdByName:        null;
     updatedBy:            null;
     updatedByName:        null;
+}
+
+export interface GroupedBotResult {
+    success:       boolean;
+    successResult: GroupedSuccessResult;
+}
+
+export interface GroupedSuccessResult {
+    pageContext: PageContext;
+    data:        BotEntity[];
+}
+
+export interface BotEntity {
+    botId:                   string;
+    botName:                 string;
+    botDescription:          null | string;
+    botType:                 string;
+    channel:                 string;
+    botLanguage:             string;
+    agentAnnotationsEnabled: boolean;
+    debuggingEnabled:        boolean;
+    botVersion:              string;
+    entityDataSourceId:      null | string;
+    skills:                  Skill[] | null;
+    publicBot:               boolean;
+    organizationId:          string;
+    botGroupId:              null;
+    chatBotPlatformUserId:   string;
+    createdAt:               number;
+    updatedAt:               number;
+    createdBy:               null | string;
+    createdByName:           null | string;
+    updatedBy:               string;
+    updatedByName:           string;
+    numberOfDialogs:         number;
+    numberOfInteractions:    number;
+    numberOfIntegrations:    number;
+    numberOfActiveAgents:    number;
+    numberOfInactiveAgents:  number;
+    numberOfDomains:         number;
+    numberOfIntents:         number;
+    hasDisambiguation:       boolean;
+    hasAutoescalation:       boolean;
+    smallTalkEnabled:        boolean;
+}
+
+export interface Skill {
+    id:   string;
+    name: null;
+}
+
+export interface PageContext {
+    page:      number;
+    size:      number;
+    totalSize: number;
 }
