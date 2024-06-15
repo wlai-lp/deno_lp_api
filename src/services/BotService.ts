@@ -5,6 +5,7 @@ import {
   LPConfig,
   BotEntity,
   GroupedBotResult,
+  BotAgentsResult,
 } from "../types/api.d.ts";
 import {
   BOT_AUTH_URL,
@@ -12,6 +13,7 @@ import {
   BOT_GET_UNGROUPED_URL,
   BOT_EXPORT_URL,
   BOT_GET_GROUP_ID_URL,
+  BOT_AGENT_URL,
 } from "../util/LPConst.ts";
 import AgentVepService from "./AgentVepService.ts";
 
@@ -49,12 +51,17 @@ export default class BotService {
         await this.getUserAuthorizationCode(BOT_AUTH_URL);
         await this.getUngroupedBotResult(); // this gets all ungrouped bot entities
         await this.getBotGroups(); // this gets all group ids
-        // TODO: get bot ids from group ids
         await this.getGroupIdsFromGroupBotResult(); // then loop each group to get bot entities
+        await this.getAgentConnector();
         return true;    
     } catch (error) {
         throw new Error("Init error " + error);        
     }    
+  }
+
+  async getAgentConnector(botId: string){
+    const result : BotAgentsResult = await this.botAPI(BOT_AGENT_URL + botId)
+    return result;
   }
 
   async getBotEntitiesByGroupId(groupId: string) {    

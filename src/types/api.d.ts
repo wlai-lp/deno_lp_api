@@ -450,3 +450,41 @@ export interface PageContext {
     size:      number;
     totalSize: number;
 }
+
+export interface BotAgentsResult {
+    activationId: string;
+    chatBotId:    string;
+    companyName:  string;
+    createTime:   number;
+    updateTime:   number;
+    status:       string;
+    agents:       Agent[];
+}
+
+export interface Agent {
+    createTime:                     number;
+    updateTime:                     number;
+    authType:                       string;
+    success:                        boolean;
+    pipelineConfig:                 PipelineConfig;
+    lpAccountId:                    string;
+    lpAccountUser:                  string;
+    lpUserId:                       string;
+    type:                           string;
+    botId:                          string;
+    serverName:                     string;
+    configurations:                 Configurations;
+    lastManualOperation:            string;
+    manualOperationTs:              number;
+    manualOperationPerformedById:   string;
+    manualOperationPerformedByName: string;
+    deploymentEnvironment:          string;
+}
+
+export interface Configurations {
+    lpUserRole:          string;
+    enableAccessibility: string;
+}
+
+export interface PipelineConfig {
+}
