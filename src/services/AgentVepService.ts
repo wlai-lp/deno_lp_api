@@ -15,7 +15,7 @@ export default class AgentVepService {
     return value !== null && value !== undefined && value !== '';
 }
 
-  async getUserBearerToken() {
+  async getUserBearerToken(): Promise<string | undefined> {
     if(this.isEmpty(this.config.bearer)){
       console.log("has token in the .env, return token " + this.config.bearer);
       return this.config.bearer;
@@ -26,7 +26,7 @@ export default class AgentVepService {
     return await this.authUser();
   }
 
-  async authUser() {
+  async authUser() : Promise<string> {
     const url = `https://${this.serviceURL}/api/account/${this.config.siteId}/login?v=1.3`;
 
     const myHeaders = new Headers();

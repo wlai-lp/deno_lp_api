@@ -1,0 +1,17 @@
+{
+  "name": "@lp/denosdk",
+  "version": "0.1.1",
+  "license": "MIT",
+  "exports": "./src/mod.ts",
+  "exclude": [
+    "./e2e/",
+    "./testapi.ts",
+    "./test",
+    "./hello.ts",
+    "./promiseall.ts"
+  ],
+  
+  "imports": {
+    "@lp/denosdk": "jsr:@lp/denosdk@^0.1.0"
+  }
+}

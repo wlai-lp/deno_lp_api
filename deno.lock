@@ -1,0 +1,16 @@
+{
+  "version": "4",
+  "specifiers": {
+    "jsr:@lp/denosdk@0.1": "0.1.0"
+  },
+  "jsr": {
+    "@lp/denosdk@0.1.0": {
+      "integrity": "c6424557d429b07f859fd1685f49ff924de3009f50267b011862eab5a8999e85"
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@lp/denosdk@0.1"
+    ]
+  }
+}

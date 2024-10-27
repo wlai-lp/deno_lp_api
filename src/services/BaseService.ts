@@ -13,7 +13,7 @@ export default class BaseService {
 
   /*************begin public methods */
 
-  public async getServiceUrl() {
+  public async getServiceUrl() : Promise<string | undefined> {
     await this.checkDomains();
     await this.checkBearer();
     const serviceUrl = this.domains!.baseURIs.find(
