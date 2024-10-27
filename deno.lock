@@ -1,16 +1,25 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@lp/denosdk@0.1": "0.1.0"
+    "jsr:@lp/denosdk@~0.1.1": "0.1.1"
   },
   "jsr": {
-    "@lp/denosdk@0.1.0": {
-      "integrity": "c6424557d429b07f859fd1685f49ff924de3009f50267b011862eab5a8999e85"
+    "@lp/denosdk@0.1.1": {
+      "integrity": "7663a7ce795b2e25263d01ceed8a21b21d1e428171299cfcfc29448df92c41bb"
     }
+  },
+  "remote": {
+    "https://deno.land/std@0.223.0/dotenv/mod.ts": "0180eaeedaaf88647318811cdaa418cc64dc51fb08354f91f5f480d0a1309f7d",
+    "https://deno.land/std@0.223.0/dotenv/parse.ts": "09977ff88dfd1f24f9973a338f0f91bbdb9307eb5ff6085446e7c423e4c7ba0c",
+    "https://deno.land/std@0.223.0/dotenv/stringify.ts": "275da322c409170160440836342eaa7cf012a1d11a7e700d8ca4e7f2f8aa4615",
+    "https://deno.land/x/deno_lp_api@v0.1.0/src/services/AgentVepService.ts": "dc26d58b3f00d8ce71dcfbd466a0bb7bf7e4fd80bee1c8699f8aa00def4b143a",
+    "https://deno.land/x/deno_lp_api@v0.1.0/src/services/DomainService.ts": "247f041d5976cd7083d33c0fd82647d796ad35c75bcea1cb599e3be89bf8b38f",
+    "https://deno.land/x/deno_lp_api@v0.1.0/src/services/MsgHistService.ts": "9962293ec563f5df6b4d55989899776b5347c7c648a1c6d2f371d3ac9adbde95",
+    "https://deno.land/x/deno_lp_api@v0.1.0/src/util/MsgHistResponse.ts": "fa9a896551be6a4fde09b4765908002824c84085b63035557552485f1a693d37"
   },
   "workspace": {
     "dependencies": [
-      "jsr:@lp/denosdk@0.1"
+      "jsr:@lp/denosdk@~0.1.1"
     ]
   }
 }

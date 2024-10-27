@@ -4,9 +4,10 @@
  *
  * @example
  * ```ts
- * import { BaseService } from "./mod.ts";
+ * import { BaseService } from "@lp/denosdk";
  *
- * const baseService = new BaseService(config, "serviceName");
+ const baseService = new BaseService(testConfig, "accountConfigReadOnly");
+console.log(await baseService.getServiceUrl());
  * ```
  *
  * @module

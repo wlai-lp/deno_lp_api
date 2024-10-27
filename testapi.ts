@@ -2,6 +2,14 @@ import MessageHistory from "https://deno.land/x/deno_lp_api@v0.1.0/src/services/
 import { testConfig } from "./test/TestConfig.ts";
 import { load } from "https://deno.land/std@0.223.0/dotenv/mod.ts";
 
+// import { BaseService } from "./mod.ts";
+import { BaseService } from "@lp/denosdk";
+
+
+const baseService = new BaseService(testConfig, "accountConfigReadOnly");
+console.log(await baseService.getServiceUrl()); //
+
+
 const env = await load();
 const convoId = env["CONVERSATIONID"];
 
