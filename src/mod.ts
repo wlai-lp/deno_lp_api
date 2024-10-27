@@ -6,8 +6,8 @@
  * ```ts
  * import { BaseService } from "@lp/denosdk";
  *
- const baseService = new BaseService(testConfig, "accountConfigReadOnly");
-console.log(await baseService.getServiceUrl());
+ * const baseService = new BaseService(testConfig, "accountConfigReadOnly");
+ * console.log(await baseService.getServiceUrl());
  * ```
  *
  * @module

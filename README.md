@@ -55,3 +55,8 @@ const password = env["PASSWORD"];
 - create AgentActivityService.ts class in /src/services folder and add all the corresponding logic
 - copy from 1 of the service as template
 - change `const serviceName` to the matching one from the domain call
+
+# jsr publish
+* update deno.json for version number
+* use `deno publish --dry-run --allow-dirty` to a a dry run, verify files that will be published
+* use `deno publish` to publish
