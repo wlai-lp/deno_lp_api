@@ -34,7 +34,7 @@ my-deno-project/
 - use `deno run -A hello.ts` to execute in deno
 
 # Test
-- setup vscode and deno, use deno extention
+- setup vscode and deno, use deno extension
 - create test classes in test folder
 - should see the click to run test for each Deno.test method
 
@@ -47,3 +47,16 @@ import { load } from "https://deno.land/std@0.223.0/dotenv/mod.ts";
 const env = await load();
 const password = env["PASSWORD"];
 ```
+
+# To create a new service convention
+- reference LP's dev page for APIs
+- check overview for the api service name
+- for example https://developers.liveperson.com/agent-activity-api-overview.html has agentActivityDomain service name
+- create AgentActivityService.ts class in /src/services folder and add all the corresponding logic
+- copy from 1 of the service as template
+- change `const serviceName` to the matching one from the domain call
+
+# jsr publish
+* update deno.json for version number
+* use `deno publish --dry-run --allow-dirty` to a a dry run, verify files that will be published
+* use `deno publish` to publish

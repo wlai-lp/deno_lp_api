@@ -1,7 +1,9 @@
 // import { load } from "https://deno.land/std@0.223.0/dotenv/mod.ts";
 // import GetAgentVep from "./src/services/AgentVepService.ts";
-import getLPDomain from "./src/services/DomainService.ts";
+// import getLPDomain from "./src/services/DomainService.ts";
 // import GetConversation from "./src/services/MsgHistService.ts";
+import * as _lp_denosdk from "@lp/denosdk";
+
 import { load } from "https://deno.land/std@0.223.0/dotenv/mod.ts";
 
 const env = await load();
@@ -28,6 +30,7 @@ console.log(sayHello(ada));
 // const site = await fetch("https://www.deno.com");
 
 // console.log(await site.text());
+
 
 const domains = await getLPDomain('36416044')
 // console.log("🚀 ~ domains:", JSON.stringify(domains))
