@@ -15,4 +15,6 @@
 export { default as BaseService } from "./services/BaseService.ts";
 export { default as AgentVepService } from "./services/AgentVepService.ts";
 export { default as DomainService } from "./services/DomainService.ts";
+export { default as MsgHistService } from "./services/MsgHistService.ts";
+
 export * from "./types/api.d.ts";
