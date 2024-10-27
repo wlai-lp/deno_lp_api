@@ -7,7 +7,7 @@ export class MsgHistResponse{
         this.responseJson = response
     }
 
-    getConvoRecordCount() {
+    getConvoRecordCount() : number {
         return this.responseJson.conversationHistoryRecords.length
     }
 
