@@ -4,6 +4,7 @@ import { testConfig } from "./TestConfig.ts";
 import { assertExists } from "https://deno.land/std@0.223.0/assert/assert_exists.ts";
 import { BOT_AUTH_URL } from "../src/util/LPConst.ts";
 import { assertIsError } from "https://deno.land/std@0.224.0/assert/assert_is_error.ts";
+// import fetchAllBotData from "../promiseall.ts"
 
 Deno.test("Bot Service start", () => {
   const botService = new BotService(testConfig);
@@ -84,4 +85,8 @@ Deno.test("Bot Service get all bot ids", async () => {
   assertExists(botService);
   assert(Array.isArray(botIds))
   assert(botIds.length == 23)
+});
+
+Deno.test("fetch all", async () => {
+  // fetchAllBotData.fetach
 });

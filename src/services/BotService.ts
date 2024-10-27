@@ -33,6 +33,7 @@ export default class BotService {
     this.config = config;
   }
 
+  
   /**
    * if you have the code and org id, you can init this way
    */
@@ -59,9 +60,25 @@ export default class BotService {
     }    
   }
 
-  async getAgentConnector(botId: string){
-    const result : BotAgentsResult = await this.botAPI(BOT_AGENT_URL + botId)
-    return result;
+  async getAgentConnector(){
+    const fetchPromises = this.botEntities?.map(async (bot) =>{
+        const result : Promise<BotAgentsResult> = this.botAPI(BOT_AGENT_URL + bot.botId)
+        // console.log("agent id = " + result.agents[0].lpUserId)
+        return result;
+    })
+
+    try {
+        // Wait for all fetch calls to complete
+        const results = await Promise.all(fetchPromises!);
+
+        // Process the results
+        results.forEach((result, index) => {
+            console.log(`Data for ID `, result);
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+    
   }
 
   async getBotEntitiesByGroupId(groupId: string) {    
@@ -148,7 +165,7 @@ export default class BotService {
     console.log("🚀 ~ BotService ~ botAPI ~ URL:", URL);
     const response = await fetch(URL, this.botApiRequestOptions());
     // const botUserAuth: BotAuthUser = await response.json();
-    return await response.json();
+    return response.json();
   }
 
   /**
