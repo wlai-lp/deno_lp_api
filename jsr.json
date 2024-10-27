@@ -3,5 +3,5 @@
     "version": "0.1.0",
     "license": "MIT",
     "exports": "./mod.ts",
-    "exclude": ["./e2e/*.ts"]
+    "exclude": ["./e2e/", "./testapi.ts", "./test", "./hello.ts", "./promiseall.ts"]
   }
